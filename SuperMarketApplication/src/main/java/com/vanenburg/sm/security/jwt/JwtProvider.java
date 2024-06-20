@@ -78,7 +78,11 @@ public class JwtProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String resolveToken(HttpServletRequest request) {
-        return request.getHeader(authorizationHeader);
+   public String resolveToken(HttpServletRequest request) {
+    	String bearerToken = request.getHeader(authorizationHeader);
+		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+			return bearerToken.substring(7);
+		}
+		return null;
     }
 }
